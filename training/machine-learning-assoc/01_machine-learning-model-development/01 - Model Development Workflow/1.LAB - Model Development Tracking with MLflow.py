@@ -88,8 +88,8 @@ print(f"User DB Location:  {DA.paths.datasets}")
 
 # COMMAND ----------
 
-# TODO
-Import the necessary library for MLflow
+# ANSWER
+# Import the necessary library for MLflow
 import mlflow
 
 Load the feature dataset using mlflow.data
@@ -116,8 +116,8 @@ display(<FILL_IN>)
 
 # COMMAND ----------
 
-# TODO
-Import necessary libraries
+# ANSWER
+# Import necessary libraries
 import mlflow.sklearn  # For MLflow integration
 from sklearn.model_selection import train_test_split  # For splitting the dataset into training and testing sets
 
@@ -136,8 +136,8 @@ X_train, X_test, y_train, y_test = <FILL_IN>
 
 # COMMAND ----------
 
-# TODO
-Define Decision Tree Classifier parameters
+# ANSWER
+# Define Decision Tree Classifier parameters
 dtc_params = {
   'criterion': <FILL_IN>,
   'max_depth': <FILL_IN>,
@@ -162,18 +162,18 @@ mlflow.set_registry_uri("databricks-uc")
 
 # COMMAND ----------
 
-# TODO
+# ANSWER
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, precision_score, recall_score, f1_score
 from sklearn.tree import DecisionTreeClassifier
 from mlflow.models.signature import infer_signature
 
-set the path for mlflow experiment
+# set the path for mlflow experiment
 mlflow.set_experiment(f"/Users/{DA.username}/LAB-1-Model-Development-Tracking-with-MLflow")
 
-Turn off autologging as we want to log the model manually
+# Turn off autologging as we want to log the model manually
 mlflow.autolog(disable=True)
 
-Start an MLFlow run
+# Start an MLFlow run
 with mlflow.start_run(run_name="Model Developing Tracking with MLflow Lab") as run:
    # Log the dataset
    mlflow.log_input(feature_dataset, context="source")
@@ -223,30 +223,30 @@ with mlflow.start_run(run_name="Model Developing Tracking with MLflow Lab") as r
 
 # COMMAND ----------
 
-# TODO    
-Import necessary libraries for creating and displaying a confusion matrix
+# ANSWER    
+# Import necessary libraries for creating and displaying a confusion matrix
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 from mlflow.client import MlflowClient
 client = MlflowClient()
 
-Compute the confusion matrix
+# Compute the confusion matrix
 cm = confusion_matrix(<FILL_IN>)
 
-Create a figure object and axes for the confusion matrix plot
+# Create a figure object and axes for the confusion matrix plot
 fig, ax = plt.subplots(figsize=(8, 6))
 
-Create a ConfusionMatrixDisplay object with the computed confusion matrix
+# Create a ConfusionMatrixDisplay object with the computed confusion matrix
 disp = ConfusionMatrixDisplay(<FILL_IN>)
 
-Plot the confusion matrix using the created axes and specified color map
+# Plot the confusion matrix using the created axes and specified color map
 disp.plot(<FILL_IN>)
 
-Set the title of the plot
+# Set the title of the plot
 ax.set_title('Confusion Matrix')
 
-Log the confusion matrix figure to MLflow
+# Log the confusion matrix figure to MLflow
 client.log_figure(<FILL_IN>)
 
 
