@@ -279,7 +279,7 @@ client.log_figure(run.info.run_id, figure=fig, artifact_file="confusion_matrix.p
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 
