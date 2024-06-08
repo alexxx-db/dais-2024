@@ -84,7 +84,7 @@ print(f"User DB Location:  {DA.paths.datasets}")
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Laod Data
+# MAGIC ### Load Data
 
 # COMMAND ----------
 
@@ -92,19 +92,19 @@ print(f"User DB Location:  {DA.paths.datasets}")
 # Import the necessary library for MLflow
 import mlflow
 
-Load the feature dataset using mlflow.data
+# Load the feature dataset using mlflow.data
 feature_dataset = mlflow.<FILL_IN>(
     table_name=<FILL_IN>,
     name=<FILL_IN>
 )
 
-convert the dataset to pandas df and drop the customerID column
+# convert the dataset to pandas df and drop the customerID column
 feature_data_pd = <FILL_IN>
 
-Convert all feature_data_pd columns to float
+# Convert all feature_data_pd columns to float
 feature_data_pd = feature_data_pd.astype(float)
 
-inspect final dataset
+# inspect final dataset
 display(<FILL_IN>)
 
 # COMMAND ----------
