@@ -24,7 +24,10 @@ DBAcademyHelper.monkey_patch(create_security_features_table)
 # COMMAND ----------
 
 DA = DBAcademyHelper(course_config, lesson_config)  # Create the DA object
-DA.reset_lesson()                                   # Reset the lesson to a clean state
+
+# COMMAND ----------
+
+# DA.reset_lesson()                                   # Reset the lesson to a clean state
 DA.init()                                           # Performs basic intialization including creating schemas and catalogs
 
 DA.create_security_features_table()
