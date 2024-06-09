@@ -1,0 +1,342 @@
+{
+    "name": "dais-2024-ml-assoc-lessons",
+    "email_notifications": {
+      "no_alert_for_skipped_runs": false
+    },
+    "webhook_notifications": {},
+    "timeout_seconds": 0,
+    "max_concurrent_runs": 1,
+    "tasks": [
+      {
+        "task_key": "launch-workflow",
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/00_data-preparation-for-machine-learning/Includes/_common",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "load-and-explore-data",
+        "depends_on": [
+          {
+            "task_key": "launch-workflow"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/00_data-preparation-for-machine-learning/Solutions/01 - Managing and Exploring Data/1.1 - Load and Explore Data",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "data-imputation-and-transformation-pipeline",
+        "depends_on": [
+          {
+            "task_key": "load-and-explore-data"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/00_data-preparation-for-machine-learning/Solutions/02 - Data Preparation and Feature Engineering/2.1 - Data Imputation and Transformation Pipeline",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "build-a-feature-engineering-pipeline",
+        "depends_on": [
+          {
+            "task_key": "data-imputation-and-transformation-pipeline"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/00_data-preparation-for-machine-learning/Solutions/02 - Data Preparation and Feature Engineering/2.2 - Build a Feature Engineering Pipeline",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "using-a-feature-store-for-feature-engineering",
+        "depends_on": [
+          {
+            "task_key": "build-a-feature-engineering-pipeline"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/00_data-preparation-for-machine-learning/Solutions/03 - Feature Store/3.1 - Using Feature Store for Feature Engineering",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "training-regression-models",
+        "depends_on": [
+          {
+            "task_key": "using-a-feature-store-for-feature-engineering"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/01_machine-learning-model-development/Solutions/01 - Model Development Workflow/1.1a - Training Regression Models",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "training-classification-models",
+        "depends_on": [
+          {
+            "task_key": "training-regression-models"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/01_machine-learning-model-development/Solutions/01 - Model Development Workflow/1.1b - Training Classification Models",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "model-tracking-with-mlflow",
+        "depends_on": [
+          {
+            "task_key": "training-classification-models"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/01_machine-learning-model-development/Solutions/01 - Model Development Workflow/1.2 - Model Tracking with MLflow",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "hyperparameter-tuning-with-hyperopt",
+        "depends_on": [
+          {
+            "task_key": "model-tracking-with-mlflow"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/01_machine-learning-model-development/Solutions/02 - Hyperparameter Tuning/2.1 - Hyperparameter Tuning with Hyperopt",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "automated-model-dvpt-with-automl",
+        "depends_on": [
+          {
+            "task_key": "hyperparameter-tuning-with-hyperopt"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/01_machine-learning-model-development/Solutions/03 - AutoML/3.1 - Automated Model Development with AutoML",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "batch-deployment",
+        "depends_on": [
+          {
+            "task_key": "automated-model-dvpt-with-automl"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/02_machine-learning-model-deployment/Solutions/02 - Batch Deployment/2.1 - Batch Deployment",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "pipeline-deployment",
+        "depends_on": [
+          {
+            "task_key": "batch-deployment"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/02_machine-learning-model-deployment/Solutions/03 - Pipeline Deployment/3.1.a - Pipeline Deployment",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "realtime-deployment-with-model-serving",
+        "depends_on": [
+          {
+            "task_key": "batch-deployment"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/02_machine-learning-model-deployment/Solutions/04 - Real-time Deployment/4.1 - Real-time Deployment with Model Serving",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      },
+      {
+        "task_key": "custom-model-deployment-with-model-serving",
+        "depends_on": [
+          {
+            "task_key": "realtime-deployment-with-model-serving"
+          }
+        ],
+        "run_if": "ALL_SUCCESS",
+        "notebook_task": {
+          "notebook_path": "/Repos/alex.barreto@databricks.com/dais-2024/training/machine-learning-assoc/02_machine-learning-model-deployment/Solutions/04 - Real-time Deployment/4.2 - Custom Model Deployment with Model Serving",
+          "source": "WORKSPACE"
+        },
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "timeout_seconds": 0,
+        "email_notifications": {},
+        "notification_settings": {
+          "no_alert_for_skipped_runs": false,
+          "no_alert_for_canceled_runs": false,
+          "alert_on_last_attempt": false
+        },
+        "webhook_notifications": {}
+      }
+    ],
+    "job_clusters": [
+      {
+        "job_cluster_key": "ml-13-3-lts-cpu",
+        "new_cluster": {
+          "cluster_name": "",
+          "spark_version": "13.3.x-cpu-ml-scala2.12",
+          "azure_attributes": {
+            "availability": "ON_DEMAND_AZURE"
+          },
+          "node_type_id": "Standard_L16as_v3",
+          "custom_tags": {
+            "usage": "solacc_testing"
+          },
+          "enable_elastic_disk": true,
+          "data_security_mode": "SINGLE_USER",
+          "num_workers": 1
+        }
+      }
+    ],
+    "tags": {
+      "fe_infra_nannies": "STOP_DELETING_OUR_WORK",
+      "policy": "DO_NOT_DELETE",
+      "project": "DAIS FY25",
+      "removeafter": "2024-12-31"
+    },
+    "run_as": {
+      "user_name": "alex.barreto@databricks.com"
+    }
+  }
