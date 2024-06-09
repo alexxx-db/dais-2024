@@ -510,6 +510,27 @@ model_fe = fit_and_register_model(X_train_pdf2, Y_train_pdf2, model_name, 20, lo
 
 # COMMAND ----------
 
+from databricks.sdk.service.catalog import OnlineTableSpec
+from databricks.sdk.service.catalog import OnlineTablesAPI
+from databricks.sdk.service.catalog import OnlineTableSpecTriggeredSchedulingPolicy
+
+
+online_table_spec = OnlineTableSpec().from_dict({
+    "source_table_full_name": feature_table_name,
+    "primary_key_columns": [primary_key],
+    "perform_full_copy": True,
+    "run_triggered" : True
+})
+
+# Create online table
+w = WorkspaceClient()
+online_table = w.online_tables.create(
+    name=f"{DA.catalog_name}.{DA.schema_name}.online_features",
+    spec=online_table_spec,
+)
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ### Deploy the Model with Online Features
 # MAGIC
