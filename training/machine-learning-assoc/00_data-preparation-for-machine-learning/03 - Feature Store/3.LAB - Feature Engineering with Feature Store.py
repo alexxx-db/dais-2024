@@ -218,7 +218,7 @@ fe.<FILL_IN>
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 

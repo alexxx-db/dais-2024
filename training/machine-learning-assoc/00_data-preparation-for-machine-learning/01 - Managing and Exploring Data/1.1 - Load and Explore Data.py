@@ -459,7 +459,7 @@ telco_dropped_df.write.mode("overwrite").option("overwriteSchema", True).saveAsT
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 

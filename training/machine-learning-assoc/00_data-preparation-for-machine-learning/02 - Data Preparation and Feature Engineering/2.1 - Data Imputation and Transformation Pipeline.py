@@ -801,7 +801,7 @@ display(cat_indexed_test_imputed_df)
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 

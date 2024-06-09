@@ -273,7 +273,7 @@ display(hpo_runs_pd)
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 

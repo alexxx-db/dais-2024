@@ -232,7 +232,7 @@ timestamp_v0 = spark.sql(<FILL_IN>)
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 

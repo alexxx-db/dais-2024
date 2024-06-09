@@ -285,7 +285,7 @@ print(f"The notebook URL           : {result.url}")
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 

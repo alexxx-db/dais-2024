@@ -350,7 +350,7 @@ display(spark.sql("SELECT * FROM security_features"))
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 

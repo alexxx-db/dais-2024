@@ -320,7 +320,7 @@ display(hpo_runs_df)
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 

@@ -311,7 +311,7 @@ display(test_transformed_df)
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 

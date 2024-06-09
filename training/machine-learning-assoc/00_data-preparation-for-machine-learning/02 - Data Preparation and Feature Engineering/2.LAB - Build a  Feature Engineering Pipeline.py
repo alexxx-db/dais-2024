@@ -439,7 +439,7 @@ Display the stages of the loaded pipeline
 
 # COMMAND ----------
 
-DA.cleanup()
+# DA.cleanup()
 
 # COMMAND ----------
 
