@@ -589,6 +589,10 @@ print(query_response.predictions)
 
 # COMMAND ----------
 
+
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC
 # MAGIC ## Clean up Classroom

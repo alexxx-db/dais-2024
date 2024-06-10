@@ -408,6 +408,7 @@ dataframe_records_lookups_only = [
 # COMMAND ----------
 
 # Query the serving endpoint with test-sample
+
 query_response = w.serving_endpoints.query(name=fs_endpoint_name, dataframe_records=dataframe_records_lookups_only)
 print(f"FS Inference results: {query_response.predictions}")
 

@@ -37,6 +37,9 @@ DA = DBAcademyHelper(course_config, lesson_config)  # Create the DA object
 # COMMAND ----------
 
 DA = DBAcademyHelper(course_config, lesson_config)  # Create the DA object
+
+# COMMAND ----------
+
 # DA.reset_lesson()                                   # Reset the lesson to a clean state
 DA.init()                                           # Performs basic intialization including creating schemas and catalogs
 DA.create_features_table()                         

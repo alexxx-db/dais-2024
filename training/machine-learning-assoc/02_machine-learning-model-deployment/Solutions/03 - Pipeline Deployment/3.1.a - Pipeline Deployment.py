@@ -173,6 +173,11 @@ with mlflow.start_run(run_name="Model-Deployment demo") as mlflow_run:
 
 # COMMAND ----------
 
+# May need to register the model *outside* this notebook
+# client.set_registered_model_alias(model_name, "DLT", get_latest_model_version(model_name))
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## Configure Pipeline to Run Batch Inference
 # MAGIC
