@@ -1,0 +1,165 @@
+# Databricks notebook source
+# INCLUDE_HEADER_TRUE
+# INCLUDE_FOOTER_TRUE
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC # Query the Endpoint and Batch Inference
+# MAGIC
+# MAGIC This notebook:
+# MAGIC 1. Queries model serving endpoint with a single request
+# MAGIC 1. Applies pandas user-defined functions (pandas UDFs) to scale out inference 
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Install `databricks-genai`.
+
+# COMMAND ----------
+
+# MAGIC %pip install openai==1.2.0 databricks-sdk==0.24.0
+# MAGIC dbutils.library.restartPython()
+
+# COMMAND ----------
+
+# MAGIC %md Set up the classroom to load the variables and datasets needed.
+
+# COMMAND ----------
+
+# MAGIC %run ./Includes/Classroom-Setup
+
+# COMMAND ----------
+
+import requests
+import json
+import pyspark.sql.functions as F
+from databricks.sdk import WorkspaceClient
+from databricks.sdk.service.serving import DataframeSplitInput
+
+import pandas as pd 
+from typing import Iterator
+import pyspark.sql.functions as F
+from openai import OpenAI
+
+# COMMAND ----------
+
+endpoint_name = "dbacademy_ift_model"
+eval_data_path = f"{CATALOG}.{USER_SCHEMA}.ift_eval"
+
+print(f"Using endpoint: {endpoint_name}")
+print(f"Using eval data path: {eval_data_path}")
+
+eval_df = spark.table(f"{eval_data_path}")
+display(eval_df)
+
+# COMMAND ----------
+
+prompt = eval_df.select("prompt").first()[0]
+prompt
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Query model serving endpoint with a single prompt example
+
+# COMMAND ----------
+
+w = WorkspaceClient()
+
+temperature = 1.0 
+max_tokens = 100
+w_response = w.serving_endpoints.query(name=endpoint_name, 
+                                       prompt=prompt, 
+                                       temperature=temperature, 
+                                       max_tokens=max_tokens)
+print(w_response.choices[0].text)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### (Alternative) Convert to scalar iterator pandas UDFs for batch inference
+# MAGIC
+# MAGIC Pandas user-defined functions, also known as vectorized UDFs, are available in Python to improve the efficiency of UDFs. Pandas UDFs utilize Apache Arrow to speed up computation and accept an iterator of `pandas.Series` or `pandas.DataFrame`.
+# MAGIC
+# MAGIC When the number of records you’re working with is greater than **`spark.conf.get('spark.sql.execution.arrow.maxRecordsPerBatch')`**, which is 10,000 by default, you should see speed ups from using a scalar iterator Pandas UDF compared to using a pandas scalar UDF because the scalar iterator pandas UDF iterates through batches of `pd.Series`.
+# MAGIC
+# MAGIC It has the general syntax of: 
+# MAGIC <br>
+# MAGIC ```
+# MAGIC @pandas_udf(...)
+# MAGIC def predict(iterator):
+# MAGIC     model = ... # load model
+# MAGIC     for features in iterator:
+# MAGIC         yield model.predict(features)
+# MAGIC ```
+# MAGIC
+# MAGIC Refer to [this page for documentation](https://docs.databricks.com/en/udf/pandas.html#iterator-of-series-to-iterator-of-series-udf).
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Since Databricks Python SDK's Workspace Client only works on the driver node, when we use pandas UDFs that leverage workers, we will not be able to use Workspace Client. As such, we pivot to using the `requests` library.
+
+# COMMAND ----------
+
+@F.pandas_udf("string")
+def get_prediction_udf(batch_prompt: Iterator[pd.Series]) -> Iterator[pd.Series]:
+
+    import mlflow
+
+    max_tokens = 100 
+    temperature = 1.0
+    api_root = mlflow.utils.databricks_utils.get_databricks_host_creds().host
+    api_token = mlflow.utils.databricks_utils.get_databricks_host_creds().token
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_token}"
+    }
+    
+    for batch in batch_prompt:
+        
+        result = []
+        for prompt in batch:  
+            data = {"prompt": prompt, "max_tokens": max_tokens, "temperature": temperature}
+            response = requests.post(
+                url=f"{api_root}/serving-endpoints/{endpoint_name}/invocations",
+                json=data,
+                headers=headers
+            )
+            if response.status_code == 200:
+                endpoint_output = json.dumps(response.json())
+                data = json.loads(endpoint_output)
+                prediction = data.get("choices")
+                try:
+                    # predicted_docs = prediction[0]["candidates"][0]["text"].split('"""')[1]
+                    predicted_docs = prediction[0]["text"]
+                    result.append(predicted_docs)
+                except IndexError as e:
+                    result.append("null")
+            else:
+                result.append(str(response.raise_for_status()))
+
+    yield pd.Series(result)
+
+# COMMAND ----------
+
+output_df = eval_df.withColumn("llm_response", get_prediction_udf("prompt"))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Write responses out
+
+# COMMAND ----------
+
+output_df.write.mode("overwrite").saveAsTable(f"{CATALOG}.{USER_SCHEMA}.llm_output_df")
+
+# COMMAND ----------
+
+display(spark.table(f"{CATALOG}.{USER_SCHEMA}.llm_output_df"))
+
+# COMMAND ----------
+
+
